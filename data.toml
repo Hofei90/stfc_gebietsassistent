@@ -1,0 +1,73 @@
+remind_offset = 120  # minutes
+ueberschrift = "Verteidigung von"
+text = ["Beginn der Verteidigung von", "Wir bitten um zahlreiches erscheinen! Außerdem beachten:"]
+
+# Hinweis: Zeiten bei Date in UTC, Wochentagname auf Deutsch
+
+[[territories]]
+system = "Testsystem"
+kategorie = 1
+ressource = "Testxyz"
+date = "Dienstag 17:32"
+other_data = "Quantenteilchen, Forschungsverstärker"
+priority = 1
+
+[[territories]]
+system = "Otima"
+kategorie = 1
+ressource = "Parstahl, Iso2"
+date = "Mittwoch 10:00"
+other_data = "Quantenteilchen, Forschungsverstärker"
+priority = 0
+
+[[territories]]
+system = "Aonad"
+kategorie = 1
+ressource = "Tritanium, Iso2"
+date = "Sonntag 14:00"
+other_data = "Quantenteilchen, Gasabbauverstärker"
+priority = 0
+
+[[territories]]
+system = "Ruhe"
+kategorie = 1
+ressource = "Iso 1 + 2"
+date = "Freitag 11:00"
+other_data = "Quantenteilchen, Ablenkungsverstärker"
+priority = 0
+
+[[territories]]
+system = "Comst"
+kategorie = 1
+ressource = "Iso 1 + 2"
+date = "Freitag 9:00"
+other_data = "Quantenteilchen, Treffsicherheitsverstärker"
+priority = 0
+
+[[territories]]
+system = "Burran"
+kategorie = 2
+ressource = "Erz*3, Iso3"
+date = "Donnerstag 12:00"
+other_data = "Surraxteilchen, Offizierverstärker, Monaveenteile"
+priority = 0
+
+[[territories]]
+system = "Thaylen"
+kategorie = 1
+ressource = "Dilithium, Iso2"
+date = "Mittwoch 12:00"
+other_data = "Quantenteilchen, Armadakampfverstärker, Kinetische Waffenverstärker"
+priority = 1
+
+[[territories]]
+system = "Roshar"
+kategorie = 2
+ressource = "Erz*4, Iso3"
+date = "Mittwoch 12:00"
+other_data = "Quantenteilchen, Forschungsverstärker, Monaveen Konstruktionsstätte"
+priority = 1
+
+
+
+
