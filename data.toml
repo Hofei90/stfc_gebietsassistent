@@ -4,13 +4,13 @@ text = ["am", "Wir bitten um zahlreiches erscheinen! Außerdem beachten:"]
 
 # Hinweis: Zeiten bei Date in UTC, Wochentagname auf Deutsch
 
-[[territories]]
-system = "Testsystem"
-kategorie = 1
-ressource = "Testxyz"
-date = "Mittwoch 11:31"
-other_data = "Quantenteilchen, Forschungsverstärker"
-priority = 1
+#[[territories]]
+#system = "Testsystem"
+#kategorie = 1
+#ressource = "Testxyz"
+#date = "Mittwoch 10:37"
+#other_data = "Quantenteilchen, Forschungsverstärker"
+#priority = 1
 
 [[territories]]
 system = "Otima"
@@ -58,7 +58,7 @@ kategorie = 1
 ressource = "Dilithium, Iso2"
 date = "Mittwoch 12:00"
 other_data = "Quantenteilchen, Armadakampfverstärker, Kinetische Waffenverstärker"
-priority = 0
+priority = 1
 
 [[territories]]
 system = "Roshar"
@@ -66,8 +66,15 @@ kategorie = 2
 ressource = "Erz*4, Iso3"
 date = "Montag 14:00"
 other_data = "Quantenteilchen, Forschungsverstärker, Monaveen Konstruktionsstätte"
-priority = 0
+priority = 1
 
+[[territories]]
+system = "Stilhe"
+kategorie = 1
+ressource = "Iso1, Iso2"
+date = "Sonntag 16:00"
+other_data = "Suraxteilchen, Konstruktionseffizienzverstärker"
+priority = 0
 
 
 
