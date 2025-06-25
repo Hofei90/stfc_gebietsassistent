@@ -1,7 +1,7 @@
 import discord
 import toml
 import sys
-
+import asyncio
 
 CONFIG = toml.load("config.toml")
 
@@ -13,29 +13,55 @@ async def get_role_id(ctx, role_name):
     for role in ctx.guild.roles:
         if role.name == role_name:
             return role.mention
+    raise ValueError(f"❌ Discord-Rolle '{role_name}' nicht gefunden.")
 
 
 def search_work_channel(work_channel_name):
-    channels = client.get_all_channels()
-    work_channel = None
-    for channel in channels:
+    for channel in client.get_all_channels():
         if str(channel) == work_channel_name:
-            work_channel = client.get_channel(channel.id)
-            break
-    return work_channel
+            return client.get_channel(channel.id)
+    return None
 
 
 async def send_reminder(text):
     workchannel = search_work_channel(CONFIG["channel"])
-    role = await get_role_id(workchannel, CONFIG["role"])
+    if workchannel is None:
+        print("❌ Discord-Kanal nicht gefunden:", CONFIG["channel"])
+        await client.close()
+        return
+
+    try:
+        role = await get_role_id(workchannel, CONFIG["role"])
+    except ValueError as e:
+        print(str(e))
+        await workchannel.send("⚠️ Fehler: Die konfigurierte Rolle wurde nicht gefunden.")
+        await client.close()
+        return
+
     await workchannel.send(f"{role}: {text}")
-    exit(0)
+    await client.close()
 
 
 @client.event
 async def on_ready():
-    await send_reminder(sys.argv[1])
+    try:
+        await send_reminder(sys.argv[1])
+    finally:
+        loop = asyncio.get_event_loop()
+        loop.stop()  # explizit Event-Loop stoppen bei mehreren Tasks
+
+
+def main():
+    try:
+        loop = asyncio.get_event_loop()
+        loop.create_task(client.start(CONFIG["dc_token"]))
+        loop.run_forever()
+    except KeyboardInterrupt:
+        print("Abbruch durch Benutzer")
+    finally:
+        loop.run_until_complete(client.close())
+        loop.close()
 
 
 if __name__ == "__main__":
-    client.run(toml.load("config.toml")["dc_token"])
+    main()
