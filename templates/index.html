@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gebietsassistent</title>
+    <meta http-equiv="refresh" content="60">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+</head>
+<body>
+    <h1>Titelüberschrift</h1>
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Kategorie</th>
+            <th>Ressourcen</th>
+            <th>Startzeit (UTC)</th>
+            <th>Lokale Zeit</th>
+            <th>Sonstige Daten</th>
+        </tr>
+
+        {% for entry in table_data %}
+        <tr>
+            <td>{% if entry[5] %}<b>{{ entry[0] }}</b>{% else %}{{ entry[0] }}{% endif %}</td>
+            <td>{% if entry[5] %}<b>{{ entry[1] }}</b>{% else %}{{ entry[1] }}{% endif %}</td>
+            <td>{% if entry[5] %}<b>{{ entry[2] }}</b>{% else %}{{ entry[2] }}{% endif %}</td>
+            <td>{{ entry[3] | datetimeformat }}</td>
+            <td data-ts="{{ entry[3] }}"></td>
+            <td>{% if entry[5] %}<b>{{ entry[4] }}</b>{% else %}{{ entry[4] }}{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        function formatLocalTime(ts) {
+            const date = new Date(ts * 1000);
+            return date.toLocaleString(undefined, {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("[data-ts]").forEach(function (el) {
+                const ts = parseInt(el.getAttribute("data-ts"));
+                el.textContent = formatLocalTime(ts);
+            });
+        });
+    </script>
+</body>
+</html>

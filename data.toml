@@ -1,6 +1,6 @@
 remind_offset = 120  # minutes
 ueberschrift = "Verteidigung von"
-text = ["Beginn der Verteidigung von", "Wir bitten um zahlreiches erscheinen! Außerdem beachten:"]
+text = ["am", "Wir bitten um zahlreiches erscheinen! Außerdem beachten:"]
 
 # Hinweis: Zeiten bei Date in UTC, Wochentagname auf Deutsch
 
@@ -8,7 +8,7 @@ text = ["Beginn der Verteidigung von", "Wir bitten um zahlreiches erscheinen! Au
 system = "Testsystem"
 kategorie = 1
 ressource = "Testxyz"
-date = "Dienstag 17:32"
+date = "Mittwoch 11:31"
 other_data = "Quantenteilchen, Forschungsverstärker"
 priority = 1
 
@@ -58,15 +58,15 @@ kategorie = 1
 ressource = "Dilithium, Iso2"
 date = "Mittwoch 12:00"
 other_data = "Quantenteilchen, Armadakampfverstärker, Kinetische Waffenverstärker"
-priority = 1
+priority = 0
 
 [[territories]]
 system = "Roshar"
 kategorie = 2
 ressource = "Erz*4, Iso3"
-date = "Mittwoch 12:00"
+date = "Montag 14:00"
 other_data = "Quantenteilchen, Forschungsverstärker, Monaveen Konstruktionsstätte"
-priority = 1
+priority = 0
 
 
 
