@@ -12,6 +12,7 @@ und folgt möglichst den [SemVer](https://semver.org/lang/de/) Regeln.
 - Lokale Zeitanzeige im Web-Frontend via JavaScript (aus UTC)
 - Rollenprüfung im Discord-Bot mit Abbruch bei Fehler
 - favicon.ico, PNGs und manifest für Browser
+- Admin-Bot `gebietsassistent_admin_dc.py`: Gebiete per Discord-Slash-Befehl anlegen, ändern, aktivieren und deaktivieren (mit Rollenprüfung, Eingabeprüfung, Backup und automatischem Neustart)
 
 ### Geändert
 - `utils.py`: Zeitberechnung vollständig UTC-basiert, keine Local-TZ-Umwandlung mehr
