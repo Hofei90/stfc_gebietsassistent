@@ -1,0 +1,3 @@
+# Erlaubt dem Benutzer "stfc" genau einen Befehl ohne Passwort: den Neustart des Gebietsassistenten.
+# Installieren mit:  sudo visudo -f /etc/sudoers.d/gebietsassistent
+stfc ALL=(root) NOPASSWD: /usr/bin/systemctl restart gebietsassistent.service

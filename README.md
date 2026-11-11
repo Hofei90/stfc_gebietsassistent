@@ -22,7 +22,7 @@ Gebiete können absichtlich nicht gelöscht werden. Uhrzeiten sind wie bisher in
 guild_id = 123456789012345678          # ID des eigenen Discord-Servers (Befehle nur dort)
 admin_role = "Gebietsadmin"            # nur Mitglieder mit dieser Rolle dürfen ändern
 admin_channel = "gebiet-admin"         # optional: Befehle nur in diesem Kanal erlaubt
-restart_command = ["sudo", "systemctl", "restart", "gebietsassistent"]  # optional
+restart_command = ["sudo", "-n", "/usr/bin/systemctl", "restart", "gebietsassistent.service"]  # optional
 ```
 
 Änderungen werden nur in `data.toml` gespeichert. Wirksam werden sie erst, wenn
@@ -38,3 +38,26 @@ ohne Passwort erlaubt werden. Fehlt der Eintrag, muss der Gebietsassistent manue
 - `data.toml` wird über eine Temp-Datei geschrieben, vorher geprüft und erst dann ausgetauscht.
   Die vorherige Version liegt in `data.toml.bak`. Kommentare in `data.toml` bleiben erhalten.
 - Jede Änderung und jeder abgelehnte Versuch wird in `gebietsassistent_admin.log` protokolliert.
+
+## Betrieb mit systemd
+
+Im Ordner `systemd/` liegen zwei Service-Dateien und eine sudoers-Regel. Benutzer (`stfc`) und Pfade
+(`/home/stfc/stfc_gebietsassistent`, `venv`) vorher an die eigene Installation anpassen.
+
+```bash
+# Service-Dateien installieren
+sudo cp systemd/gebietsassistent.service systemd/gebietsassistent_admin.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now gebietsassistent.service gebietsassistent_admin.service
+
+# sudoers-Regel für /gebiet_neustart (Inhalt aus systemd/sudoers_gebietsassistent einfügen)
+sudo visudo -f /etc/sudoers.d/gebietsassistent
+
+# Status und Ausgaben ansehen
+systemctl status gebietsassistent.service
+journalctl -u gebietsassistent_admin.service -f
+```
+
+Der Eintrag `restart_command` in `config.toml` muss exakt zur sudoers-Regel passen
+(`sudo -n /usr/bin/systemctl restart gebietsassistent.service`). Die Regel erlaubt nur genau
+diesen einen Befehl, `-n` verhindert, dass der Bot auf eine Passwortabfrage wartet.
