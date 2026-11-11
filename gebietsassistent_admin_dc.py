@@ -189,6 +189,7 @@ async def system_autocomplete(interaction, current):
 # ---------- Befehle ----------
 
 @tree.command(name="gebiet_liste", description="Alle Gebiete anzeigen", guild=GUILD)
+@app_commands.default_permissions()
 async def gebiet_liste(interaction: discord.Interaction):
     if not await check_allowed(interaction):
         return
@@ -197,6 +198,7 @@ async def gebiet_liste(interaction: discord.Interaction):
 
 
 @tree.command(name="gebiet_neu", description="Neues Gebiet anlegen", guild=GUILD)
+@app_commands.default_permissions()
 @app_commands.describe(uhrzeit="Uhrzeit in UTC, z. B. 14:00", aktiv="Erinnerung aktiv (priority)")
 @app_commands.choices(wochentag=WEEKDAY_CHOICES)
 async def gebiet_neu(interaction: discord.Interaction,
@@ -228,6 +230,7 @@ async def gebiet_neu(interaction: discord.Interaction,
 
 
 @tree.command(name="gebiet_aendern", description="Bestehendes Gebiet ändern", guild=GUILD)
+@app_commands.default_permissions()
 @app_commands.describe(uhrzeit="Uhrzeit in UTC, z. B. 14:00")
 @app_commands.choices(wochentag=WEEKDAY_CHOICES)
 @app_commands.autocomplete(system=system_autocomplete)
@@ -277,18 +280,21 @@ async def set_priority(interaction, system, priority):
 
 
 @tree.command(name="gebiet_aktivieren", description="Erinnerung für ein Gebiet aktivieren", guild=GUILD)
+@app_commands.default_permissions()
 @app_commands.autocomplete(system=system_autocomplete)
 async def gebiet_aktivieren(interaction: discord.Interaction, system: str):
     await set_priority(interaction, system, 1)
 
 
 @tree.command(name="gebiet_deaktivieren", description="Erinnerung für ein Gebiet deaktivieren", guild=GUILD)
+@app_commands.default_permissions()
 @app_commands.autocomplete(system=system_autocomplete)
 async def gebiet_deaktivieren(interaction: discord.Interaction, system: str):
     await set_priority(interaction, system, 0)
 
 
 @tree.command(name="gebiet_neustart", description="Gebietsassistent neu starten, damit Änderungen wirksam werden", guild=GUILD)
+@app_commands.default_permissions()
 async def gebiet_neustart(interaction: discord.Interaction):
     if not await check_allowed(interaction):
         return

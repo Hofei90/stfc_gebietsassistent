@@ -30,6 +30,12 @@ restart_command = ["sudo", "-n", "/usr/bin/systemctl", "restart", "gebietsassist
 der einmalig `restart_command` ausführt. Bei `sudo` sollte in den sudoers nur genau dieser eine Befehl
 ohne Passwort erlaubt werden. Fehlt der Eintrag, muss der Gebietsassistent manuell neu gestartet werden.
 
+### Sichtbarkeit der Befehle
+
+Die Befehle sind standardmäßig nur für Server-Administratoren sichtbar. Damit die Admin-Rolle sie
+sieht: Servereinstellungen → Integrationen → Bot → Befehle, dort die Rolle (und optional den Kanal)
+freigeben. Die Rollenprüfung im Bot bleibt zusätzlich bestehen.
+
 ### Sicherheit
 
 - Berechtigung: nur im eingestellten Server, nur mit der Admin-Rolle (und ggf. nur im Admin-Kanal).
