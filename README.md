@@ -12,6 +12,7 @@ Admin-Rolle die Gebiete in `data.toml` per Slash-Befehl verwalten können:
 | `/gebiet_aendern` | Kategorie, Ressource, Wochentag, Uhrzeit oder sonstige Daten ändern |
 | `/gebiet_aktivieren` | Erinnerung aktivieren (`priority = 1`) |
 | `/gebiet_deaktivieren` | Erinnerung deaktivieren (`priority = 0`) |
+| `/gebiet_neustart` | Gebietsassistent neu starten, damit Änderungen wirksam werden |
 
 Gebiete können absichtlich nicht gelöscht werden. Uhrzeiten sind wie bisher in UTC.
 
@@ -24,9 +25,10 @@ admin_channel = "gebiet-admin"         # optional: Befehle nur in diesem Kanal e
 restart_command = ["sudo", "systemctl", "restart", "gebietsassistent"]  # optional
 ```
 
-`restart_command` startet nach jeder Änderung `gebietsassistent_control.py` neu, damit die neuen
-Daten übernommen werden. Bei `sudo` sollte in den sudoers nur genau dieser eine Befehl ohne
-Passwort erlaubt werden. Fehlt der Eintrag, muss der Gebietsassistent manuell neu gestartet werden.
+Änderungen werden nur in `data.toml` gespeichert. Wirksam werden sie erst, wenn
+`gebietsassistent_control.py` neu gestartet wird. Das geschieht bewusst und nur über `/gebiet_neustart`,
+der einmalig `restart_command` ausführt. Bei `sudo` sollte in den sudoers nur genau dieser eine Befehl
+ohne Passwort erlaubt werden. Fehlt der Eintrag, muss der Gebietsassistent manuell neu gestartet werden.
 
 ### Sicherheit
 

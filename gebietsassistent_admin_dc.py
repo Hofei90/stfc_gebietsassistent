@@ -139,15 +139,15 @@ def save_data(data):
 def restart_control():
     command = CONFIG.get("restart_command")
     if not command:
-        return "ℹ️ Kein `restart_command` konfiguriert, bitte Gebietsassistent manuell neu starten."
+        return "ℹ️ Kein `restart_command` in config.toml eingetragen."
     try:
         result = subprocess.run(command, check=False, timeout=60, capture_output=True, text=True)
     except (OSError, subprocess.TimeoutExpired) as e:
         print("❌ Neustart fehlgeschlagen:", e)
-        return "⚠️ Gespeichert, aber der Neustart des Gebietsassistenten ist fehlgeschlagen."
+        return "⚠️ Der Neustart des Gebietsassistenten ist fehlgeschlagen."
     if result.returncode != 0:
         print("❌ Neustart fehlgeschlagen:", result.stderr)
-        return "⚠️ Gespeichert, aber der Neustart des Gebietsassistenten ist fehlgeschlagen."
+        return "⚠️ Der Neustart des Gebietsassistenten ist fehlgeschlagen."
     return "🔄 Gebietsassistent wurde neu gestartet."
 
 
@@ -167,9 +167,7 @@ async def change_data(interaction, change):
             return
 
         write_log(interaction, text)
-        await interaction.response.defer(ephemeral=True, thinking=True)
-        restart_text = await asyncio.to_thread(restart_control)
-    await interaction.followup.send(f"✅ {text}\n{restart_text}", ephemeral=True, allowed_mentions=NO_PINGS)
+    await answer(interaction, f"✅ {text}\nℹ️ Wirksam erst nach /gebiet_neustart.")
 
 
 def territory_text(territory):
@@ -288,6 +286,17 @@ async def gebiet_aktivieren(interaction: discord.Interaction, system: str):
 @app_commands.autocomplete(system=system_autocomplete)
 async def gebiet_deaktivieren(interaction: discord.Interaction, system: str):
     await set_priority(interaction, system, 0)
+
+
+@tree.command(name="gebiet_neustart", description="Gebietsassistent neu starten, damit Änderungen wirksam werden", guild=GUILD)
+async def gebiet_neustart(interaction: discord.Interaction):
+    if not await check_allowed(interaction):
+        return
+    async with write_lock:
+        await interaction.response.defer(ephemeral=True, thinking=True)
+        text = await asyncio.to_thread(restart_control)
+        write_log(interaction, f"/gebiet_neustart: {text}")
+    await interaction.followup.send(text, ephemeral=True, allowed_mentions=NO_PINGS)
 
 
 # ---------- Start ----------
