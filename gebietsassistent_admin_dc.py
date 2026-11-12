@@ -188,12 +188,30 @@ async def system_autocomplete(interaction, current):
 
 # ---------- Befehle ----------
 
+def sort_by_date(territory):
+    weekday, time_str = territory["date"].split()
+    hour, minute = map(int, time_str.split(":"))
+    return WEEKDAYS.index(weekday), hour, minute
+
+
+def sort_by_system(territory):
+    return territory["system"].lower()
+
+
 @tree.command(name="gebiet_liste", description="Alle Gebiete anzeigen", guild=GUILD)
 @app_commands.default_permissions()
-async def gebiet_liste(interaction: discord.Interaction):
+@app_commands.describe(sortierung="Sortierung der Liste (Standard: Wochentag und Uhrzeit)")
+@app_commands.choices(sortierung=[app_commands.Choice(name="Wochentag und Uhrzeit", value="termin"),
+                                  app_commands.Choice(name="Systemname (alphabetisch)", value="system")])
+async def gebiet_liste(interaction: discord.Interaction, sortierung: app_commands.Choice[str] = None):
     if not await check_allowed(interaction):
         return
-    lines = [territory_text(territory) for territory in toml.load(DATA_FILE)["territories"]]
+    territories = toml.load(DATA_FILE)["territories"]
+    if sortierung is not None and sortierung.value == "system":
+        territories = sorted(territories, key=sort_by_system)
+    else:
+        territories = sorted(territories, key=sort_by_date)
+    lines = [territory_text(territory) for territory in territories]
     await answer(interaction, "\n".join(lines) or "Keine Gebiete vorhanden.")
 
 

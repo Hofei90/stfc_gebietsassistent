@@ -7,7 +7,7 @@ Admin-Rolle die Gebiete in `data.toml` per Slash-Befehl verwalten können:
 
 | Befehl | Funktion |
 |---|---|
-| `/gebiet_liste` | alle Gebiete anzeigen |
+| `/gebiet_liste` | alle Gebiete anzeigen, sortiert nach Wochentag/Uhrzeit (Standard) oder Systemname |
 | `/gebiet_neu` | neues Gebiet anlegen |
 | `/gebiet_aendern` | Kategorie, Ressource, Wochentag, Uhrzeit oder sonstige Daten ändern |
 | `/gebiet_aktivieren` | Erinnerung aktivieren (`priority = 1`) |
