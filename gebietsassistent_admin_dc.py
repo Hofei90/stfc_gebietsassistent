@@ -180,13 +180,15 @@ def territory_text(territory):
 
 
 def table_text(territories):
-    header = ["System", "Kat", "Termin (UTC)", "Aktiv", "Ressourcen", "Sonstiges"]
+    # Jede Zeile beginnt mit genau einem Emoji, damit die Spalten trotzdem untereinander stehen
+    header = ["📋", "Status", "System", "Kat", "Termin (UTC)", "Ressourcen", "Sonstiges"]
     rows = []
     for territory in territories:
-        rows.append([str(territory["system"]),
+        rows.append(["🟢" if territory["priority"] else "⚪",
+                     "aktiv" if territory["priority"] else "inaktiv",
+                     str(territory["system"]),
                      str(territory["kategorie"]),
                      str(territory["date"]),
-                     "ja" if territory["priority"] else "-",
                      str(territory["ressource"]),
                      str(territory["other_data"])])
 
@@ -196,11 +198,11 @@ def table_text(territories):
             widths[index] = max(widths[index], len(cell))
 
     def line(cells):
-        # letzte Spalte nicht auffüllen, damit keine unnötigen Leerzeichen entstehen
-        text = " | ".join(cell.ljust(widths[index]) for index, cell in enumerate(cells[:-1]))
-        return (text + " | " + cells[-1]).replace("`", "'")
+        # Emoji vorne und letzte Spalte nicht auffüllen
+        middle = " | ".join(cell.ljust(widths[index]) for index, cell in enumerate(cells[1:-1], start=1))
+        return f"{cells[0]} {middle} | {cells[-1]}".replace("`", "'")
 
-    lines = [line(header), "-+-".join("-" * width for width in widths[:-1]) + "-+-" + "-" * widths[-1]]
+    lines = [line(header)]
     for row in rows:
         lines.append(line(row))
 
