@@ -30,11 +30,20 @@ restart_command = ["sudo", "-n", "/usr/bin/systemctl", "restart", "gebietsassist
 der einmalig `restart_command` ausführt. Bei `sudo` sollte in den sudoers nur genau dieser eine Befehl
 ohne Passwort erlaubt werden. Fehlt der Eintrag, muss der Gebietsassistent manuell neu gestartet werden.
 
-### Sichtbarkeit der Befehle
+### Berechtigung und Sichtbarkeit der Befehle
 
-Die Befehle sind standardmäßig nur für Server-Administratoren sichtbar. Damit die Admin-Rolle sie
-sieht: Servereinstellungen → Integrationen → Bot → Befehle, dort die Rolle (und optional den Kanal)
-freigeben. Die Rollenprüfung im Bot bleibt zusätzlich bestehen.
+**Ausführen** dürfen die Befehle nur Mitglieder mit der Rolle aus `admin_role`. Der Bot prüft das bei
+jedem Aufruf selbst und lehnt alle anderen ab, auch Server-Administratoren ohne diese Rolle.
+
+**Sehen** sollen die Befehle ebenfalls nur Mitglieder dieser Rolle. Ein Bot darf die Sichtbarkeit für
+eine bestimmte Rolle nicht selbst festlegen, deshalb einmalig in Discord einrichten:
+
+1. Servereinstellungen → Integrationen → den Bot auswählen → Befehle
+2. Die Admin-Rolle hinzufügen und erlauben (optional zusätzlich auf einen Kanal beschränken)
+
+Ohne diese Freigabe sind die Befehle nur für Server-Administratoren sichtbar (Standard aus dem Code),
+für normale Mitglieder bleiben sie unsichtbar. Server-Administratoren sehen in Discord grundsätzlich
+alle Befehle, können sie ohne die Admin-Rolle aber nicht ausführen.
 
 ### Sicherheit
 
