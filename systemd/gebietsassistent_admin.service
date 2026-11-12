@@ -1,0 +1,22 @@
+# Admin-Bot (Gebiete über Discord verwalten)
+# Pfade und Benutzer an die eigene Installation anpassen.
+# Kein NoNewPrivileges, weil /gebiet_neustart per sudo den Gebietsassistenten neu startet.
+
+[Unit]
+Description=STFC Gebietsassistent Admin-Bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=stfc
+Group=stfc
+WorkingDirectory=/home/stfc/stfc_gebietsassistent
+ExecStart=/home/stfc/stfc_gebietsassistent/venv/bin/python gebietsassistent_admin_dc.py
+Environment=PYTHONUNBUFFERED=1
+Restart=on-failure
+RestartSec=10
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

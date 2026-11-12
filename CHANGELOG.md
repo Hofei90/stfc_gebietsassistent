@@ -12,8 +12,11 @@ und folgt möglichst den [SemVer](https://semver.org/lang/de/) Regeln.
 - Lokale Zeitanzeige im Web-Frontend via JavaScript (aus UTC)
 - Rollenprüfung im Discord-Bot mit Abbruch bei Fehler
 - favicon.ico, PNGs und manifest für Browser
+- Admin-Bot `gebietsassistent_admin_dc.py`: Gebiete per Discord-Slash-Befehl anlegen, ändern, aktivieren und deaktivieren (mit Rollenprüfung, Eingabeprüfung, Backup) sowie bewusster Neustart über `/gebiet_neustart`
 
 ### Geändert
+- `data.toml` nicht mehr in Git (in `.gitignore`), Vorlage als `data.example.toml`
+- Felder `ressource` und `other_data` vollständig entfernt (data.toml, Webanzeige, Admin-Bot)
 - `utils.py`: Zeitberechnung vollständig UTC-basiert, keine Local-TZ-Umwandlung mehr
 - Discord-Bot: ersetzt `SystemExit` durch sauberen Shutdown
 - Webanzeige verwendet Unix-Timestamps statt verbleibende Millisekunden

@@ -1,0 +1,22 @@
+# Gebietsassistent (Erinnerungen an Gebietsverteidigungen)
+# Pfade und Benutzer an die eigene Installation anpassen.
+
+[Unit]
+Description=STFC Gebietsassistent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=stfc
+Group=stfc
+WorkingDirectory=/home/stfc/stfc_gebietsassistent
+ExecStart=/home/stfc/stfc_gebietsassistent/venv/bin/python gebietsassistent_control.py
+Environment=PYTHONUNBUFFERED=1
+Restart=on-failure
+RestartSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
