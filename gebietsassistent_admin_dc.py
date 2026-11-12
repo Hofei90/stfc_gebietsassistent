@@ -261,7 +261,7 @@ async def gebiet_neu(interaction: discord.Interaction,
                      kategorie: app_commands.Range[int, 1, 10],
                      wochentag: app_commands.Choice[str],
                      uhrzeit: str,
-                     aktiv: bool = False):
+                     aktiv: bool):
     if not await check_allowed(interaction):
         return
 
