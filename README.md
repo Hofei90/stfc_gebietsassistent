@@ -76,3 +76,12 @@ journalctl -u gebietsassistent_admin.service -f
 Der Eintrag `restart_command` in `config.toml` muss exakt zur sudoers-Regel passen
 (`sudo -n /usr/bin/systemctl restart gebietsassistent.service`). Die Regel erlaubt nur genau
 diesen einen Befehl, `-n` verhindert, dass der Bot auf eine Passwortabfrage wartet.
+
+## data.toml
+
+`data.toml` wird vom Admin-Bot verändert und ist deshalb nicht in Git, damit `git pull` sie nie
+überschreibt. Für eine neue Installation die Vorlage kopieren:
+
+```bash
+cp data.example.toml data.toml
+```

@@ -134,3 +134,4 @@ config.toml
 data.toml.bak
 data.toml.tmp
 gebietsassistent_admin.log
+data.toml
