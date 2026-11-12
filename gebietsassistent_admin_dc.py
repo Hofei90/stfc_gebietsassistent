@@ -17,7 +17,6 @@ DATA_FILE = "data.toml"
 LOG_FILE = "gebietsassistent_admin.log"
 
 MAX_NAME_LENGTH = 50
-MAX_TEXT_LENGTH = 200
 MAX_MESSAGE_LENGTH = 1900
 
 GUILD = discord.Object(id=int(CONFIG["guild_id"]))
@@ -173,24 +172,20 @@ async def change_data(interaction, change):
 def territory_text(territory):
     status = "🟢 aktiv" if territory["priority"] else "⚪ inaktiv"
     system = discord.utils.escape_markdown(str(territory["system"]))
-    ressource = discord.utils.escape_markdown(str(territory["ressource"]))
-    other_data = discord.utils.escape_markdown(str(territory["other_data"]))
     return (f"**{system}** ({status}) - Kat. {territory['kategorie']}, "
-            f"{territory['date']} UTC, {ressource} | {other_data}")
+            f"{territory['date']} UTC")
 
 
 def table_text(territories):
     # Jede Zeile beginnt mit genau einem Emoji, damit die Spalten trotzdem untereinander stehen
-    header = ["📋", "Status", "System", "Kat", "Termin (UTC)", "Ressourcen", "Sonstiges"]
+    header = ["📋", "Status", "System", "Kat", "Termin (UTC)"]
     rows = []
     for territory in territories:
         rows.append(["🟢" if territory["priority"] else "⚪",
                      "aktiv" if territory["priority"] else "inaktiv",
                      str(territory["system"]),
                      str(territory["kategorie"]),
-                     str(territory["date"]),
-                     str(territory["ressource"]),
-                     str(territory["other_data"])])
+                     str(territory["date"])])
 
     widths = [len(title) for title in header]
     for row in rows:
@@ -264,10 +259,8 @@ async def gebiet_liste(interaction: discord.Interaction, sortierung: app_command
 async def gebiet_neu(interaction: discord.Interaction,
                      system: str,
                      kategorie: app_commands.Range[int, 1, 10],
-                     ressource: str,
                      wochentag: app_commands.Choice[str],
                      uhrzeit: str,
-                     sonstige_daten: str,
                      aktiv: bool = False):
     if not await check_allowed(interaction):
         return
@@ -279,9 +272,7 @@ async def gebiet_neu(interaction: discord.Interaction,
         territory = tomlkit.table()
         territory["system"] = name
         territory["kategorie"] = kategorie
-        territory["ressource"] = check_text(ressource, "ressource", MAX_TEXT_LENGTH)
         territory["date"] = check_date(wochentag.value, uhrzeit)
-        territory["other_data"] = check_text(sonstige_daten, "sonstige_daten", MAX_TEXT_LENGTH)
         territory["priority"] = 1 if aktiv else 0
         data["territories"].append(territory)
         return f"Gebiet angelegt: {territory_text(territory)}"
@@ -297,10 +288,8 @@ async def gebiet_neu(interaction: discord.Interaction,
 async def gebiet_aendern(interaction: discord.Interaction,
                          system: str,
                          kategorie: app_commands.Range[int, 1, 10] = None,
-                         ressource: str = None,
                          wochentag: app_commands.Choice[str] = None,
-                         uhrzeit: str = None,
-                         sonstige_daten: str = None):
+                         uhrzeit: str = None):
     if not await check_allowed(interaction):
         return
 
@@ -311,15 +300,11 @@ async def gebiet_aendern(interaction: discord.Interaction,
         old_text = territory_text(territory)
         if kategorie is not None:
             territory["kategorie"] = kategorie
-        if ressource is not None:
-            territory["ressource"] = check_text(ressource, "ressource", MAX_TEXT_LENGTH)
         if wochentag is not None or uhrzeit is not None:
             old_weekday, old_time = str(territory["date"]).split()
             new_weekday = wochentag.value if wochentag is not None else old_weekday
             new_time = uhrzeit if uhrzeit is not None else old_time
             territory["date"] = check_date(new_weekday, new_time)
-        if sonstige_daten is not None:
-            territory["other_data"] = check_text(sonstige_daten, "sonstige_daten", MAX_TEXT_LENGTH)
         return f"Gebiet geändert:\nalt: {old_text}\nneu: {territory_text(territory)}"
 
     await change_data(interaction, change)

@@ -14,20 +14,16 @@
         <tr>
             <th>Name</th>
             <th>Kategorie</th>
-            <th>Ressourcen</th>
             <th>Startzeit (UTC)</th>
             <th>Lokale Zeit</th>
-            <th>Sonstige Daten</th>
         </tr>
 
         {% for entry in table_data %}
         <tr>
-            <td>{% if entry[5] %}<b>{{ entry[0] }}</b>{% else %}{{ entry[0] }}{% endif %}</td>
-            <td>{% if entry[5] %}<b>{{ entry[1] }}</b>{% else %}{{ entry[1] }}{% endif %}</td>
-            <td>{% if entry[5] %}<b>{{ entry[2] }}</b>{% else %}{{ entry[2] }}{% endif %}</td>
-            <td>{{ entry[3] | datetimeformat }}</td>
-            <td data-ts="{{ entry[3] }}"></td>
-            <td>{% if entry[5] %}<b>{{ entry[4] }}</b>{% else %}{{ entry[4] }}{% endif %}</td>
+            <td>{% if entry[3] %}<b>{{ entry[0] }}</b>{% else %}{{ entry[0] }}{% endif %}</td>
+            <td>{% if entry[3] %}<b>{{ entry[1] }}</b>{% else %}{{ entry[1] }}{% endif %}</td>
+            <td>{{ entry[2] | datetimeformat }}</td>
+            <td data-ts="{{ entry[2] }}"></td>
         </tr>
         {% endfor %}
     </table>

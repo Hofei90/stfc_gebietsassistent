@@ -30,7 +30,7 @@ def datetimeformat(ts):
     return dt.strftime('%A, %d.%m.%Y %H:%M UTC')
 
 def sort_table_data(table_data):
-    return sorted(table_data, key=lambda x: x[3], reverse=False)
+    return sorted(table_data, key=lambda x: x[2], reverse=False)
 
 @app.route('/')
 def index():
@@ -40,10 +40,8 @@ def index():
         table_data.append([
             entry["system"],        # 0
             entry["kategorie"],     # 1
-            entry["ressource"],     # 2
-            ts,                     # 3 - Unix Timestamp (UTC)
-            entry["other_data"],    # 4
-            bool(entry["priority"]) # 5
+            ts,                     # 2 - Unix Timestamp (UTC)
+            bool(entry["priority"]) # 3
         ])
 
     table_data = sort_table_data(table_data)
