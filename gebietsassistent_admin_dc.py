@@ -172,8 +172,46 @@ async def change_data(interaction, change):
 
 def territory_text(territory):
     status = "🟢 aktiv" if territory["priority"] else "⚪ inaktiv"
-    return (f"**{territory['system']}** ({status}) - Kat. {territory['kategorie']}, "
-            f"{territory['date']} UTC, {territory['ressource']} | {territory['other_data']}")
+    system = discord.utils.escape_markdown(str(territory["system"]))
+    ressource = discord.utils.escape_markdown(str(territory["ressource"]))
+    other_data = discord.utils.escape_markdown(str(territory["other_data"]))
+    return (f"**{system}** ({status}) - Kat. {territory['kategorie']}, "
+            f"{territory['date']} UTC, {ressource} | {other_data}")
+
+
+def table_text(territories):
+    header = ["System", "Kat", "Termin (UTC)", "Aktiv", "Ressourcen", "Sonstiges"]
+    rows = []
+    for territory in territories:
+        rows.append([str(territory["system"]),
+                     str(territory["kategorie"]),
+                     str(territory["date"]),
+                     "ja" if territory["priority"] else "-",
+                     str(territory["ressource"]),
+                     str(territory["other_data"])])
+
+    widths = [len(title) for title in header]
+    for row in rows:
+        for index, cell in enumerate(row):
+            widths[index] = max(widths[index], len(cell))
+
+    def line(cells):
+        # letzte Spalte nicht auffüllen, damit keine unnötigen Leerzeichen entstehen
+        text = " | ".join(cell.ljust(widths[index]) for index, cell in enumerate(cells[:-1]))
+        return (text + " | " + cells[-1]).replace("`", "'")
+
+    lines = [line(header), "-+-".join("-" * width for width in widths[:-1]) + "-+-" + "-" * widths[-1]]
+    for row in rows:
+        lines.append(line(row))
+
+    # Codeblock darf nicht abgeschnitten werden, sonst fehlt das schließende ```
+    text = ""
+    for index, row_text in enumerate(lines):
+        if len(text) + len(row_text) + 20 > MAX_MESSAGE_LENGTH:
+            text += f"… ({len(lines) - index} weitere)\n"
+            break
+        text += row_text + "\n"
+    return f"```\n{text}```"
 
 
 async def system_autocomplete(interaction, current):
@@ -211,8 +249,10 @@ async def gebiet_liste(interaction: discord.Interaction, sortierung: app_command
         territories = sorted(territories, key=sort_by_system)
     else:
         territories = sorted(territories, key=sort_by_date)
-    lines = [territory_text(territory) for territory in territories]
-    await answer(interaction, "\n".join(lines) or "Keine Gebiete vorhanden.")
+    if not territories:
+        await answer(interaction, "Keine Gebiete vorhanden.")
+        return
+    await answer(interaction, table_text(territories))
 
 
 @tree.command(name="gebiet_neu", description="Neues Gebiet anlegen", guild=GUILD)
